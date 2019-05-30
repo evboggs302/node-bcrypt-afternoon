@@ -29,5 +29,29 @@ module.exports = {
         });
       }
     });
+  },
+  login: (req, res) => {
+    const { username, password } = req.body;
+    const db = req.app.get("db");
+    db.get_user(username).then(user => {
+      console.log("this is user:", user);
+      if (!user[0]) {
+        res.status(401).send("User NOT Found");
+      } else {
+        bcrypt.compare(password, user[0].hash).then(result => {
+          if (!result) {
+            res.status(403).send("Incorrect Password");
+          } else {
+            const visitor = user[0];
+            req.session.user = {
+              isAdmin: visitor.is_admin,
+              id: visitor.id,
+              username: visitor.username
+            };
+            res.status(201).send(req.session.user);
+          }
+        });
+      }
+    });
   }
 };
