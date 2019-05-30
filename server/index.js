@@ -6,6 +6,7 @@ const port = 4000;
 const app = express();
 const { CONNECTION_STRING, SESSION_SECRET } = process.env;
 const authCtrl = require("./controllers/authController");
+const treasureCtrl = require("./controllers/treasureController");
 
 massive(CONNECTION_STRING).then(db => {
   app.set("db", db);
@@ -22,5 +23,7 @@ app.use(
 
 app.post("/auth/register", authCtrl.register);
 app.post("/auth/login", authCtrl.login);
+app.get("/auth/logout", authCtrl.logout);
+app.get("/api/treasure/dragon", treasureCtrl.dragonTreasure);
 
 app.listen(port, () => console.log(`listening on port: ${port}`));
