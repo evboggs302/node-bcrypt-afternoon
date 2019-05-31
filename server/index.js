@@ -24,8 +24,10 @@ app.use(
 
 app.post("/auth/register", authCtrl.register);
 app.post("/auth/login", authCtrl.login);
+app.post("/api/treasure/user", auth.usersOnly, treasureCtrl.addMyTreasure);
 app.get("/auth/logout", authCtrl.logout);
 app.get("/api/treasure/dragon", treasureCtrl.dragonTreasure);
 app.get("/api/treasure/user", auth.usersOnly, treasureCtrl.getUserTreasure);
+app.get("/api/treasure/all", auth.usersOnly, treasureCtrl.getAllTreasure);
 
 app.listen(port, () => console.log(`listening on port: ${port}`));
